@@ -2,6 +2,19 @@
 
 The News Classification System is designed to fetch news articles from various RSS feeds, parse them, remove duplicates, and classify them into different categories using a Celery worker for asynchronous processing. The system utilizes PostgreSQL as the database to store news articles and their categories.
 
+## Project Structure
+
+```plaintext
+/News-Classification
+│
+├── main.py                  # Main script for fetching, parsing, and processing news articles
+├── celery_worker.py         # Celery worker for asynchronously processing articles
+├── database.py              # Database schema and methods for interacting with the database
+├── nlp.py                   # NLP module for text preprocessing and article categorization
+├── logger.py                # Logging configuration and utility module
+├── requirements.txt         # Required Python packages for the project
+└── README.md                # Project documentation
+```
 ## Components
 
 1. **main.py:**
@@ -16,6 +29,7 @@ The News Classification System is designed to fetch news articles from various R
      - `hashlib`: Library for secure hashing.
      - `celery_worker.process_article`: Asynchronous task for processing articles.
      - `database.NewsDatabase`: Interface for interacting with the database.
+     - `logger`: Logging module for tracking events and errors.
 
 2. **database.py:**
    - **Responsibility:**
@@ -23,6 +37,7 @@ The News Classification System is designed to fetch news articles from various R
      - Provide a session interface (`NewsDatabase`) for interacting with the database.
    - **Dependencies:**
      - `sqlalchemy`: SQL toolkit and Object-Relational Mapping (ORM) library.
+     - `logger`: Logging module.
 
 3. **celery_worker.py:**
    - **Responsibility:**
@@ -32,8 +47,24 @@ The News Classification System is designed to fetch news articles from various R
      - `celery`: Distributed task queue for handling asynchronous tasks.
      - `database.NewsArticle`: Model for the `news_articles` table.
      - `nltk`: Natural Language Toolkit for NLP operations.
+    
+4. **nlp.py:**
+   - **Components:**
+     - `preprocess_text(text)`: Tokenizes and preprocesses the given text by removing stop words and stemming.
+     - `categorize_article(article)`: Categorizes news articles based on a basic positive/negative classification. Modify for advanced NLP-based categorization.
+   - **Dependencies:**
+     - `nltk.tokenize`: Tokenization library.
+     - `nltk.corpus.stopwords`: Stopwords corpus from NLTK.
+     - `nltk.stem.PorterStemmer`: Porter Stemmer for word stemming.
+     - `logger`: Logging module.
+    
+5. **logger.py:**
+   - **Responsibility:**
+     - Configures and provides a logging instance for the project.
+   - **Dependencies:**
+     - `logging`: Python's built-in logging module.
        
-4. **output.csv:**
+6. **output.csv:**
    - CSV file containing the output of the processed news articles, including fields such as `id`, `title`, `content`, `pub_date`, `source_url`, and `category`.
 
 ## Design Choices
