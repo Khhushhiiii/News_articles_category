@@ -14,7 +14,7 @@ class NewsArticle(Base):
     source_url = Column(String)
     category = Column(String,default='Others')
 
-# Replace 'your_username', 'your_password', and 'your_database' with your actual PostgreSQL credentials and database name
+
 engine = create_engine('postgresql://postgres:khushidb@localhost/news?client_encoding=utf8')
 Base.metadata.create_all(engine)
 
