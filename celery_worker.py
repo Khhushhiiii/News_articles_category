@@ -15,8 +15,7 @@ def preprocess_text(text):
     return filtered_words
 
 def categorize_article(article):
-    # Implement your NLP classification logic here
-    # For simplicity, let's assume a basic positive/negative classification
+   
     return 'Positive/Uplifting' if 'positive_keyword' in preprocess_text(article['content']) else 'Others'
 
 @app.task
@@ -28,5 +27,5 @@ def process_article(article_id):
         article.category = category
         session.commit()
 
-# To run the Celery worker, execute the following command in your terminal:
+
 # celery -A celery_worker worker --loglevel=info
