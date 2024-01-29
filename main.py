@@ -4,7 +4,7 @@ from datetime import datetime
 from urllib.parse import urlparse
 import hashlib
 from hashlib import sha256
-from celery_worker import process_article  # Import the Celery task
+from celery_worker import process_article  
 from database import NewsDatabase
 
 feeds = [
@@ -21,14 +21,14 @@ def parse_feed(feed_url):
     parsed_articles = []
     feed = feedparser.parse(feed_url)
     for entry in feed.entries:
-        # Check if 'published_parsed' is available
+       
         pub_date = (
             datetime(*entry.published_parsed[:6])
             if hasattr(entry, 'published_parsed')
-            else datetime.now()  # Set default date if 'published_parsed' is not available
+            else datetime.now()  
         )
 
-        # Check if 'summary' is available
+       
         content = entry.summary if 'summary' in entry else entry.description if 'description' in entry else ''
         
         article = {
@@ -45,7 +45,7 @@ all_articles = []
 for feed_url in feeds:
     all_articles.extend(parse_feed(feed_url))
 
-# Remove duplicates based on title and source URL
+
 unique_articles = {hashlib.sha256(article['title'].encode() + article['source_url'].encode()).hexdigest(): article for article in all_articles}.values()
 
 news_db = NewsDatabase()
